@@ -744,7 +744,33 @@ input[type="text"]:focus {
   }
   .card-glass { padding: 1.2rem; }
   .game-controls { right: 0.8rem; bottom: 105px; }
+  .hand-container { height: 100px; }
+  .card-item { width: 55px; height: 85px; margin-right: -20px; }
+  .card-value { font-size: 1.3rem; }
+  .turn-timer-container { width: 90px; }
+  .hud-room { font-size: 0.8rem; }
+}
+
+/* Handy Portrait Layout: Log near top under Header */
+@media (orientation: portrait) and (max-width: 768px), (max-width: 600px) and (orientation: portrait) {
   .action-log-toast { 
+    top: 66px;
+    bottom: auto; 
+    font-size: 0.7rem; 
+    padding: 0.25rem 0.6rem; 
+    background: transparent; 
+    backdrop-filter: none; 
+    -webkit-backdrop-filter: none; 
+    border: none; 
+    box-shadow: none; 
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9), 0 0 2px rgba(0, 0, 0, 0.8); 
+  }
+}
+
+/* Handy Landscape Layout: Log near bottom above Hand Container */
+@media (orientation: landscape) and (max-height: 550px), (orientation: landscape) and (max-width: 950px) {
+  .action-log-toast { 
+    top: auto;
     bottom: 82px; 
     font-size: 0.7rem; 
     padding: 0.25rem 0.6rem; 
@@ -755,9 +781,4 @@ input[type="text"]:focus {
     box-shadow: none; 
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9), 0 0 2px rgba(0, 0, 0, 0.8); 
   }
-  .hand-container { height: 100px; }
-  .card-item { width: 55px; height: 85px; margin-right: -20px; }
-  .card-value { font-size: 1.3rem; }
-  .turn-timer-container { width: 90px; }
-  .hud-room { font-size: 0.8rem; }
 }
