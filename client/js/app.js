@@ -544,12 +544,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const winPoints = document.getElementById('win-points');
 
     if (winner) {
-      winTitle.textContent = `🏆 ${winner.name} GEWINNT!`;
-      winSubtitle.textContent = `Glückwunsch an ${winner.name} zum Rundensieg!`;
-      winPoints.textContent = `Bestenliste aktualisiert`;
+      winTitle.textContent = `🏆 ${winner.name} hat gewonnen!`;
+      winSubtitle.textContent = `${winner.name} hat gewonnen! 🎉`;
+      winPoints.textContent = state.lastAction;
       window.soundManager.winSound();
     } else {
-      winTitle.textContent = 'Runde beendet';
+      winTitle.textContent = 'Spiel beendet';
       winSubtitle.textContent = state.lastAction;
     }
 

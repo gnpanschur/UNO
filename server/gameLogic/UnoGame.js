@@ -412,7 +412,7 @@ class UnoGame {
     this.stopTurnTimer();
     this.status = 'ended';
     const roundPoints = this.highscoreManager.calculateRoundPoints(winner.id, this.players);
-    this.lastAction = `🏆 ${winner.name} GEWINNT DIE RUNDE! +${roundPoints} Punkte erhalten!`;
+    this.lastAction = `🏆 ${winner.name} hat gewonnen! (+${roundPoints} Punkte)`;
     this.notifyStateChange();
   }
 
