@@ -372,6 +372,7 @@ document.addEventListener('DOMContentLoaded', () => {
         pendingWildCardId = null;
       }
       showScreen('game');
+      gameEngine.resizeCanvas();
       updateGameHUD(state);
       updateCatchUnoBanner(state);
     } else if (state.status === 'ended') {

@@ -31,11 +31,16 @@ class GameEngine {
   resizeCanvas() {
     if (!this.canvas) return;
     const parent = this.canvas.parentElement;
+    if (!parent || parent.clientWidth === 0 || parent.clientHeight === 0) return;
+
     this.width = parent.clientWidth;
     this.height = parent.clientHeight;
-    this.canvas.width = this.width * window.devicePixelRatio;
-    this.canvas.height = this.height * window.devicePixelRatio;
-    this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    const dpr = window.devicePixelRatio || 1;
+    this.canvas.width = this.width * dpr;
+    this.canvas.height = this.height * dpr;
+
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+    this.ctx.scale(dpr, dpr);
   }
 
   setGameState(state, localSocketId) {
@@ -44,6 +49,18 @@ class GameEngine {
   }
 
   loop() {
+    if (this.canvas && this.canvas.parentElement) {
+      const pW = this.canvas.parentElement.clientWidth;
+      const pH = this.canvas.parentElement.clientHeight;
+      if (pW > 0 && pH > 0 && (this.width !== pW || this.height !== pH)) {
+        this.resizeCanvas();
+      }
+    }
+
+    const dpr = window.devicePixelRatio || 1;
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+    this.ctx.scale(dpr, dpr);
+
     this.ctx.clearRect(0, 0, this.width, this.height);
 
     if (this.gameState && this.gameState.status === 'playing') {
@@ -128,12 +145,15 @@ class GameEngine {
   drawCenterPiles() {
     const cx = this.width / 2;
     const cy = this.height / 2 - 20;
+    const tableRadius = Math.min(this.width * 0.38, this.height * 0.30, 240);
+
+    const cardW = Math.min(60, Math.max(40, tableRadius * 0.40));
+    const cardH = cardW * 1.5;
+    const gap = 12;
 
     // Draw Pile (Left)
-    const deckX = cx - 75;
-    const deckY = cy - 45;
-    const cardW = 60;
-    const cardH = 90;
+    const deckX = cx - cardW - gap / 2;
+    const deckY = cy - cardH / 2;
 
     // 3D Deck stack effect
     const remaining = this.gameState ? Math.min(this.gameState.deckRemaining, 5) : 3;
@@ -150,8 +170,8 @@ class GameEngine {
     this.ctx.restore();
 
     // Discard Pile (Right)
-    const discardX = cx + 15;
-    const discardY = cy - 45;
+    const discardX = cx + gap / 2;
+    const discardY = cy - cardH / 2;
 
     if (this.gameState && this.gameState.topCard) {
       this.drawCardFront(discardX, discardY, cardW, cardH, this.gameState.topCard);
