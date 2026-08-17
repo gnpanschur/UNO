@@ -86,6 +86,13 @@ input[type="text"] {
   display: flex;
 }
 
+#login-screen,
+#lobby-screen {
+  justify-content: flex-start;
+  padding-top: 1rem;
+  overflow-y: auto;
+}
+
 /* Glassmorphic Panel Card */
 .card-glass {
   background: var(--bg-card);
@@ -687,7 +694,11 @@ input[type="text"]:focus {
 
 /* Responsive Mobile Layouts */
 @media (max-width: 600px) {
-  .card-glass { padding: 1.5rem; }
+  #login-screen,
+  #lobby-screen {
+    padding-top: 0.3rem;
+  }
+  .card-glass { padding: 1.2rem; }
   .game-controls { right: 0.8rem; bottom: 105px; }
   .action-log-toast { 
     bottom: 82px; 
