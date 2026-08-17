@@ -1,3 +1,6 @@
+https://github.com/gnpanschur/UNO
+https://uno-mba3.onrender.com
+
 
 Rolle: Du bist ein Senior Software Engineer für Echtzeit-Multiplayer-Webspiele.
 
@@ -48,4 +51,5 @@ WebSocket-Handling: Render unterstützt WebSockets, aber du musst im Frontend si
 
 Echtzeit-Performance: Da 2D-Canvas-Animationen (wie "Karte fliegt vom Stapel zum Spieler") sehr client-lastig sind, achte darauf, dass der Server nur die Logik (wer ist dran, welche Karte liegt) synchronisiert und der Client die Animation lokal berechnet. Das hält den Traffic gering.
 
-Das ganze soll für das spielen mit dem Handy optimiert sein.
+Das ganze soll für das spielen mit dem Handy optimiert sein. Responsive Design: Landscape-Layout 
+siehe Bild: UNO01, UNO02.
