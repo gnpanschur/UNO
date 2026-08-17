@@ -300,6 +300,21 @@ input[type="text"]:focus {
   transform: scale(1.08);
 }
 
+.btn-red-hud {
+  background: rgba(255, 56, 56, 0.2) !important;
+  color: #ff3838 !important;
+  border: 1px solid rgba(255, 56, 56, 0.5) !important;
+  box-shadow: 0 0 10px rgba(255, 56, 56, 0.3);
+  font-weight: 900;
+}
+
+.btn-red-hud:hover {
+  background: #ff3838 !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 15px rgba(255, 56, 56, 0.8);
+  transform: scale(1.08);
+}
+
 .error-message {
   color: var(--uno-red);
   font-size: 0.9rem;
