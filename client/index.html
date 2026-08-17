@@ -53,10 +53,13 @@
       <div class="card-glass lobby-box">
         <header class="lobby-header">
           <h2>SPIEL-LOBBY</h2>
-          <div class="room-code-badge" id="lobby-room-code-display" title="Klicken zum Kopieren">
-            <span>RAUMCODE:</span>
-            <strong id="display-room-code">----</strong>
-            <button id="btn-copy-code" class="btn-icon" title="Code kopieren">📋</button>
+          <div style="display: flex; align-items: center; gap: 0.6rem;">
+            <button id="btn-lobby-rules" class="btn-icon" title="Spielregeln">📖</button>
+            <div class="room-code-badge" id="lobby-room-code-display" title="Klicken zum Kopieren">
+              <span>RAUMCODE:</span>
+              <strong id="display-room-code">----</strong>
+              <button id="btn-copy-code" class="btn-icon" title="Code kopieren">📋</button>
+            </div>
           </div>
         </header>
 
@@ -88,6 +91,7 @@
         <div class="hud-left">
           <span class="hud-room">Raum: <strong id="game-room-code">----</strong></span>
           <button id="btn-toggle-sound" class="btn-icon" title="Ton an/aus">🔊</button>
+          <button id="btn-toggle-rules" class="btn-icon" title="Spielregeln">📖</button>
           <button id="btn-toggle-leaderboard" class="btn-icon" title="Highscore ansehen">🏆</button>
           <button id="btn-toggle-fullscreen" class="btn-icon btn-blue-hud" title="Vollbild an/aus">⛶</button>
         </div>
@@ -191,6 +195,41 @@
         </div>
         <div class="win-actions">
           <button id="btn-next-round" class="btn btn-success btn-glow">Nächste Runde 🚀</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= RULES MODAL ================= -->
+    <div id="rules-modal" class="modal">
+      <div class="modal-content card-glass rules-modal-content">
+        <div class="modal-header">
+          <h3>📖 UNO Spielregeln</h3>
+          <button id="btn-close-rules" class="btn-close">&times;</button>
+        </div>
+        <div class="rules-body">
+          <h4>🎯 Ziel des Spiels</h4>
+          <p>Lege als erster Spieler alle deine Handkarten ab!</p>
+          
+          <h4>🃏 Grundregeln</h4>
+          <ul>
+            <li>Du kannst eine Karte legen, wenn sie in <strong>Farbe</strong> oder <strong>Zahl/Symbol</strong> mit der obersten Karte auf dem Ablagestapel übereinstimmt.</li>
+            <li>Kannst du keine Karte legen, ziehe eine Karte vom Stapel. Passt die gezogene Karte, kannst du sie sofort legen oder deinen Zug beenden.</li>
+          </ul>
+
+          <h4>⚡ Aktionskarten</h4>
+          <ul>
+            <li><strong>+2 Ziehen:</strong> Der nächste Spieler muss 2 Karten ziehen und wird übersprungen.</li>
+            <li><strong>Aussetzen (🚫):</strong> Der nächste Spieler wird übersprungen.</li>
+            <li><strong>Richtungswechsel (🔄):</strong> Kehrt die Reihenfolge der Spieler um.</li>
+            <li><strong>Farbenwahl (★):</strong> Bestimme die nächste Farbe.</li>
+            <li><strong>+4 Farbenwahl (★+4):</strong> Wähle die Farbe, und der nächste Spieler zieht 4 Karten & wird übersprungen.</li>
+          </ul>
+
+          <h4>🚨 UNO-Ruf & Erwischt</h4>
+          <ul>
+            <li>Hast du nur noch <strong>1 Karte</strong>, musst du den <strong>UNO!</strong>-Button drücken.</li>
+            <li>Vergisst du es und ein Mitspieler drückt <strong>ERWISCHT!</strong>, musst du <strong>2 Strafkarten</strong> ziehen!</li>
+          </ul>
         </div>
       </div>
     </div>

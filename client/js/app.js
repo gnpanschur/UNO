@@ -34,6 +34,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const colorPickerModal = document.getElementById('color-picker-modal');
   const leaderboardModal = document.getElementById('leaderboard-modal');
   const roundWinModal = document.getElementById('round-win-modal');
+  const rulesModal = document.getElementById('rules-modal');
+  const btnToggleRules = document.getElementById('btn-toggle-rules');
+  const btnLobbyRules = document.getElementById('btn-lobby-rules');
+  const btnCloseRules = document.getElementById('btn-close-rules');
   const catchUnoBanner = document.getElementById('catch-uno-banner');
   const catchUnoText = document.getElementById('catch-uno-text');
   const handCardsList = document.getElementById('hand-cards-list');
@@ -173,6 +177,22 @@ document.addEventListener('DOMContentLoaded', () => {
   btnCloseLeaderboard.addEventListener('click', () => {
     leaderboardModal.classList.remove('active');
   });
+
+  // Toggle Rules Modal
+  if (btnToggleRules) {
+    btnToggleRules.addEventListener('click', () => rulesModal.classList.add('active'));
+  }
+  if (btnLobbyRules) {
+    btnLobbyRules.addEventListener('click', () => rulesModal.classList.add('active'));
+  }
+  if (btnCloseRules) {
+    btnCloseRules.addEventListener('click', () => rulesModal.classList.remove('active'));
+  }
+  if (rulesModal) {
+    rulesModal.addEventListener('click', (e) => {
+      if (e.target === rulesModal) rulesModal.classList.remove('active');
+    });
+  }
 
   // Toggle Fullscreen (Blue Button)
   if (btnToggleFullscreen) {
