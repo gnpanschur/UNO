@@ -1,0 +1,23 @@
+{
+  "name": "uno-multiplayer",
+  "version": "1.0.0",
+  "description": "2D Real-time Multiplayer UNO Game for Web and Mobile (Render Ready)",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node --watch server/server.js"
+  },
+  "keywords": [
+    "uno",
+    "multiplayer",
+    "socket.io",
+    "canvas",
+    "game"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5"
+  }
+}

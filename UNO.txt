@@ -1,0 +1,51 @@
+
+Rolle: Du bist ein Senior Software Engineer für Echtzeit-Multiplayer-Webspiele.
+
+Aufgabe: Entwickle ein voll funktionsfähiges, 2D-basiertes UNO-Multiplayer-Spiel in JavaScript (Node.js/Socket.io). Das Spiel soll für eine lokale Entwicklungsumgebung (localhost) optimiert sein, aber bereits die notwendige Architektur für ein Deployment auf der Plattform Render (Node.js Environment) besitzen.
+
+Technische Spezifikationen:
+
+Architektur: Client-Server-Modell mit WebSockets (Socket.io). Der Server hält den "State of Truth".
+
+Rendering: 2D-Web-Canvas. Implementiere eine saubere, reaktive UI, die Spielkarten flüssig darstellt (inkl. einfacher CSS-Animationen für Kartenbewegungen).
+
+Lobby & Auth:
+
+Einfaches Login-System via 4-Buchstaben-Raumcode.
+
+Benutzer-Authentifizierung: Eingabe eines Spielernamens, der in einer Session gespeichert wird.
+
+Implementiere eine serverseitige Highscore-Liste (in-memory, vorbereitet für spätere Datenbankanbindung), die nach jeder Runde aktualisiert wird.
+
+Multiplayer-Logik: Echtzeit-Synchronisation zwischen allen Clients im selben Raum. Ein Timer soll sicherstellen, dass Züge nicht unendlich lange dauern.
+
+Render-Deployment-Ready:
+
+Erstelle eine package.json, die Start-Skripte für Render konfiguriert (npm start).
+
+Trenne client/ und server/ Verzeichnisse sauber.
+
+Stelle sicher, dass die WebSockets die von Render zugewiesenen Ports korrekt handhaben.
+
+Ausgabe:
+
+Die Dateistruktur des Projekts.
+
+Der vollständige Code für den Server (Socket.io-Handling, Spiellogik, Highscore-Verwaltung).
+
+Der vollständige Client-Code (HTML/CSS/JS mit Rendering-Logik).
+
+Eine README.md mit einer Anleitung, wie man den Server lokal startet und welche Einstellungen man bei einem Render-Deployment (z.B. Environment Variables) beachten muss.
+
+Was du jetzt noch beachten solltest (Die "Hidden" Herausforderungen)
+Da du das Spiel auf Render bringen willst, gibt es ein paar Dinge, die du im Hinterkopf behalten solltest, um Frustration zu vermeiden:
+
+State-Persistenz: Wenn du Render im "Free Tier" nutzt, fährt die Instanz nach einer gewissen Zeit der Inaktivität herunter (Spin-down). Wenn du dann Highscores nur in-memory (im Arbeitsspeicher des Servers) speicherst, sind sie nach dem Neustart gelöscht.
+
+Tipp: Du wirst später eine kleine Datenbank (wie Redis oder MongoDB Atlas, beides gibt es als kostenlose Instanzen) brauchen, wenn die Highscores dauerhaft erhalten bleiben sollen. (Das wird vorerst nicht benötigt)
+
+WebSocket-Handling: Render unterstützt WebSockets, aber du musst im Frontend sicherstellen, dass der Socket-Client die URL des Servers dynamisch lädt (für Localhost http://localhost:3000, für Render die öffentliche URL).
+
+Echtzeit-Performance: Da 2D-Canvas-Animationen (wie "Karte fliegt vom Stapel zum Spieler") sehr client-lastig sind, achte darauf, dass der Server nur die Logik (wer ist dran, welche Karte liegt) synchronisiert und der Client die Animation lokal berechnet. Das hält den Traffic gering.
+
+Das ganze soll für das spielen mit dem Handy optimiert sein.

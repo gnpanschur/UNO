@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>UNO 2D Multiplayer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Background Animated Canvas Glow -->
+  <div class="bg-glow"></div>
+
+  <div id="app" class="app-container">
+
+    <!-- ================= AUTH / LOGIN SCREEN ================= -->
+    <section id="login-screen" class="screen active">
+      <div class="card-glass login-box">
+        <div class="logo-title">
+          <span class="letter u">U</span>
+          <span class="letter n">N</span>
+          <span class="letter o">O</span>
+        </div>
+        <p class="subtitle">Echtzeit 2D-Multiplayer Kartenspiel</p>
+
+        <div class="form-group">
+          <label for="player-name-input">Dein Spielername</label>
+          <input type="text" id="player-name-input" placeholder="z. B. Alex" maxlength="12" autocomplete="off">
+        </div>
+
+        <div class="action-buttons">
+          <button id="btn-create-room" class="btn btn-primary btn-glow">
+            <span class="icon">✨</span> Raum Erstellen
+          </button>
+
+          <div class="divider"><span>ODER</span></div>
+
+          <div class="join-group">
+            <input type="text" id="room-code-input" placeholder="RAUMCODE" maxlength="4" style="text-transform: uppercase;">
+            <button id="btn-join-room" class="btn btn-secondary">Beitreten</button>
+          </div>
+        </div>
+
+        <div id="login-error" class="error-message"></div>
+      </div>
+    </section>
+
+    <!-- ================= LOBBY SCREEN ================= -->
+    <section id="lobby-screen" class="screen">
+      <div class="card-glass lobby-box">
+        <header class="lobby-header">
+          <h2>SPIEL-LOBBY</h2>
+          <div class="room-code-badge" id="lobby-room-code-display" title="Klicken zum Kopieren">
+            <span>RAUMCODE:</span>
+            <strong id="display-room-code">----</strong>
+            <button id="btn-copy-code" class="btn-icon" title="Code kopieren">📋</button>
+          </div>
+        </header>
+
+        <div class="players-section">
+          <h3>Spieler im Raum (<span id="player-count">0</span>/8)</h3>
+          <ul id="players-list" class="players-grid">
+            <!-- Player cards inserted dynamically -->
+          </ul>
+        </div>
+
+        <div class="lobby-footer">
+          <button id="btn-toggle-ready" class="btn btn-secondary">
+            Ready schalten
+          </button>
+          <button id="btn-start-game" class="btn btn-success btn-glow" style="display: none;">
+            Spiel Starten 🚀
+          </button>
+          <button id="btn-leave-lobby" class="btn btn-danger">
+            Verlassen
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= GAME PLAY SCREEN ================= -->
+    <section id="game-screen" class="screen">
+      <!-- Top HUD Header -->
+      <header class="game-hud">
+        <div class="hud-left">
+          <span class="hud-room">Raum: <strong id="game-room-code">----</strong></span>
+          <button id="btn-toggle-sound" class="btn-icon" title="Ton an/aus">🔊</button>
+          <button id="btn-toggle-leaderboard" class="btn-icon" title="Highscore ansehen">🏆</button>
+          <button id="btn-toggle-fullscreen" class="btn-icon btn-blue-hud" title="Vollbild an/aus">⛶</button>
+        </div>
+
+        <div class="hud-center">
+          <div class="turn-timer-container">
+            <div id="turn-timer-bar" class="turn-timer-bar"></div>
+            <span id="turn-timer-text">20s</span>
+          </div>
+          <div id="active-turn-indicator" class="turn-indicator">Warten...</div>
+        </div>
+
+        <div class="hud-right">
+          <button id="btn-leave-game" class="btn btn-sm btn-danger">Beenden</button>
+        </div>
+      </header>
+
+      <!-- 2D Canvas Playfield -->
+      <div class="canvas-wrapper">
+        <canvas id="game-canvas"></canvas>
+
+        <!-- Catch UNO Alert Overlay -->
+        <div id="catch-uno-banner" class="catch-uno-banner hidden">
+          <span id="catch-uno-text">🚨 Ein Spieler hat vergessen UNO zu rufen!</span>
+          <button id="btn-catch-uno" class="btn btn-warning btn-pulse">ERWISCHT! 🚨</button>
+        </div>
+      </div>
+
+      <!-- Notification Banner -->
+      <div id="game-action-log" class="action-log-toast">Willkommen bei UNO!</div>
+
+      <!-- Action Floating Buttons & Player Controls -->
+      <div class="game-controls">
+        <button id="btn-call-uno" class="btn btn-uno btn-glow">
+          🔥 UNO! 🔥
+        </button>
+
+        <button id="btn-draw-card" class="btn btn-primary">
+          🃏 Karte Ziehen
+        </button>
+
+        <button id="btn-pass-turn" class="btn btn-secondary" style="display: none;">
+          ➡️ Zug Passen
+        </button>
+      </div>
+
+      <!-- Active Player Hand Cards Bar -->
+      <div class="hand-container">
+        <div id="hand-cards-list" class="hand-cards">
+          <!-- Card elements inserted dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= WILD COLOR PICKER MODAL ================= -->
+    <div id="color-picker-modal" class="modal">
+      <div class="modal-content card-glass">
+        <h3>Wähle eine neue Farbe:</h3>
+        <div class="color-picker-grid">
+          <button class="color-btn color-red" data-color="red">Rot</button>
+          <button class="color-btn color-yellow" data-color="yellow">Gelb</button>
+          <button class="color-btn color-green" data-color="green">Grün</button>
+          <button class="color-btn color-blue" data-color="blue">Blau</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= LEADERBOARD MODAL ================= -->
+    <div id="leaderboard-modal" class="modal">
+      <div class="modal-content card-glass">
+        <div class="modal-header">
+          <h3>🏆 Rangliste & Highscores</h3>
+          <button id="btn-close-leaderboard" class="btn-close">&times;</button>
+        </div>
+        <table class="leaderboard-table">
+          <thead>
+            <tr>
+              <th>Rang</th>
+              <th>Spieler</th>
+              <th>Punkte</th>
+              <th>Siege</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboard-body">
+            <!-- Leaderboard rows -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ================= ROUND WIN MODAL ================= -->
+    <div id="round-win-modal" class="modal">
+      <div class="modal-content card-glass win-modal">
+        <h2 id="win-title">🏆 Rundenende!</h2>
+        <p id="win-subtitle">Spieler XY hat die Runde gewonnen!</p>
+        <div class="win-stats">
+          <div class="stat-box">
+            <span class="stat-label">Erhaltene Punkte</span>
+            <span id="win-points" class="stat-value">+0</span>
+          </div>
+        </div>
+        <div class="win-actions">
+          <button id="btn-next-round" class="btn btn-success btn-glow">Nächste Runde 🚀</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/sound.js"></script>
+  <script src="js/gameEngine.js"></script>
+  <script src="js/socketClient.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
