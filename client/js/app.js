@@ -582,6 +582,15 @@ document.addEventListener('DOMContentLoaded', () => {
     roundWinModal.classList.add('active');
   }
 
+  // Screen Orientation Lock Helper
+  function lockPortraitOrientation() {
+    if (window.screen && window.screen.orientation && window.screen.orientation.lock) {
+      window.screen.orientation.lock('portrait').catch(() => {});
+    }
+  }
+
   // Initial setup
+  lockPortraitOrientation();
+  window.addEventListener('orientationchange', lockPortraitOrientation);
   showScreen('login');
 });
