@@ -423,7 +423,7 @@ input[type="text"]:focus {
 .game-hud {
   width: 100%;
   height: 60px;
-  padding: 0 1.5rem;
+  padding: 0 1rem;
   background: rgba(11, 15, 25, 0.85);
   backdrop-filter: blur(10px);
   display: flex;
@@ -431,12 +431,27 @@ input[type="text"]:focus {
   justify-content: space-between;
   z-index: 10;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-sizing: border-box;
 }
 
-.hud-left, .hud-right {
+.hud-left {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.hud-right {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.hud-room {
+  font-size: 0.85rem;
+  margin-right: 0.3rem;
+  white-space: nowrap;
 }
 
 .hud-center {
@@ -444,6 +459,7 @@ input[type="text"]:focus {
   flex-direction: column;
   align-items: center;
   gap: 2px;
+  flex-shrink: 0;
 }
 
 .turn-timer-container {
@@ -802,5 +818,8 @@ input[type="text"]:focus {
   .card-item { width: 55px; height: 85px; margin-right: -20px; }
   .card-value { font-size: 1.3rem; }
   .turn-timer-container { width: 90px; }
-  .hud-room { font-size: 0.8rem; }
+  .game-hud { padding: 0 0.5rem; }
+  .hud-left, .hud-right { gap: 0.25rem; }
+  .btn-icon { width: 34px; height: 34px; font-size: 0.95rem; }
+  .hud-room { font-size: 0.75rem; margin-right: 0.1rem; }
 }
