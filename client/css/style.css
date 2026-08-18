@@ -417,6 +417,16 @@ input[type="text"]:focus {
 #game-screen {
   position: relative;
   justify-content: space-between;
+  transition: background 0.5s ease;
+}
+
+#game-screen.my-turn-bg {
+  background: radial-gradient(circle at center, #0b3c20 0%, #062413 75%, #021209 100%) !important;
+}
+
+.canvas-wrapper.my-turn-bg {
+  background: radial-gradient(circle at center, rgba(14, 82, 44, 0.4) 0%, rgba(7, 39, 21, 0.7) 100%) !important;
+  transition: background 0.5s ease;
 }
 
 /* HUD Header */
@@ -493,9 +503,42 @@ input[type="text"]:focus {
 }
 
 .turn-indicator {
+  position: absolute;
+  bottom: 12px;
+  left: 14px;
+  z-index: 10;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0.4rem 0.85rem;
+  border-radius: 12px;
   font-size: 0.85rem;
   font-weight: 700;
   color: var(--uno-blue);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+/* Dunkelgrüner Casino-Style wenn der Spieler am Zug ist */
+.turn-indicator.my-turn {
+  background: linear-gradient(135deg, #0e522c 0%, #07331a 100%) !important;
+  color: #ffffff !important;
+  border: 1.5px solid #32ff7e !important;
+  box-shadow: 0 0 18px rgba(50, 255, 126, 0.5), inset 0 0 10px rgba(50, 255, 126, 0.2) !important;
+  animation: turnPulse 1.8s infinite alternate ease-in-out !important;
+}
+
+@keyframes turnPulse {
+  0% {
+    box-shadow: 0 0 12px rgba(50, 255, 126, 0.4), inset 0 0 5px rgba(50, 255, 126, 0.2);
+    transform: scale(1);
+  }
+  100% {
+    box-shadow: 0 0 22px rgba(50, 255, 126, 0.7), inset 0 0 12px rgba(50, 255, 126, 0.4);
+    transform: scale(1.03);
+  }
 }
 
 /* 2D Canvas Playfield */
@@ -673,6 +716,21 @@ input[type="text"]:focus {
 }
 
 .modal.active { display: flex; }
+
+#fireworks-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.win-modal {
+  position: relative;
+  z-index: 2;
+}
 
 .color-picker-grid {
   display: grid;

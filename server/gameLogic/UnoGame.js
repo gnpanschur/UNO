@@ -102,7 +102,7 @@ class UnoGame {
     if (!host || !host.isHost) return { success: false, message: 'Nur der Host kann das Spiel starten' };
     if (this.players.length < 2) return { success: false, message: 'Mindestens 2 Spieler erforderlich zum Starten' };
     
-    const unready = this.players.filter(p => !p.isReady);
+    const unready = this.players.filter(p => !p.isHost && !p.isReady);
     if (unready.length > 0) return { success: false, message: 'Alle Spieler müssen bereit sein' };
 
     this.deck.reset();
@@ -412,6 +412,7 @@ class UnoGame {
     this.stopTurnTimer();
     this.status = 'ended';
     const roundPoints = this.highscoreManager.calculateRoundPoints(winner.id, this.players);
+    this.lastRoundPoints = roundPoints;
     this.lastAction = `🏆 ${winner.name} hat gewonnen! (+${roundPoints} Punkte)`;
     this.notifyStateChange();
   }
@@ -449,6 +450,7 @@ class UnoGame {
       discardCount: this.discardPile.length,
       turnTimeRemaining: this.turnTimeRemaining,
       lastAction: this.lastAction,
+      lastRoundPoints: this.lastRoundPoints || 0,
       drawnThisTurn: this.drawnThisTurn,
       drawnCardId: this.drawnCardId,
       leaderboard: this.highscoreManager.getLeaderboard(),

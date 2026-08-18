@@ -340,6 +340,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Next Round Button
   btnNextRound.addEventListener('click', () => {
     roundWinModal.classList.remove('active');
+    if (window.fireworksManager) window.fireworksManager.stop();
     window.socketClient.startGame((res) => {
       if (!res.success) {
         showScreen('lobby');
@@ -359,6 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (state.status === 'lobby') {
       releaseWakeLock();
       roundWinModal.classList.remove('active');
+      if (window.fireworksManager) window.fireworksManager.stop();
       colorPickerModal.classList.remove('active');
       pendingWildCardId = null;
       showScreen('lobby');
@@ -366,6 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (state.status === 'playing') {
       requestWakeLock();
       roundWinModal.classList.remove('active');
+      if (window.fireworksManager) window.fireworksManager.stop();
       // Only close color picker if turn timed out or passed to another player
       if (pendingWildCardId && state.activePlayerId !== myId) {
         colorPickerModal.classList.remove('active');
@@ -408,11 +411,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const li = document.createElement('li');
       li.className = 'player-card';
 
-      let statusBadge = p.isReady
-        ? `<span class="badge badge-ready">BEREIT</span>`
-        : `<span class="badge badge-waiting">WARTET</span>`;
+      let statusBadge;
       if (p.isHost) {
-        statusBadge = `<span class="badge badge-host">HOST</span> ` + statusBadge;
+        statusBadge = `<span class="badge badge-host">HOST</span>`;
+      } else {
+        statusBadge = p.isReady
+          ? `<span class="badge badge-ready">BEREIT</span>`
+          : `<span class="badge badge-waiting">WARTET</span>`;
       }
 
       li.innerHTML = `
@@ -457,12 +462,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const activePlayer = state.players.find(p => p.id === state.activePlayerId);
     const myId = window.socketClient.socketId;
 
+    const gameScreenEl = document.getElementById('game-screen');
+    const canvasWrapperEl = document.querySelector('.canvas-wrapper');
+
     if (state.activePlayerId === myId) {
       activeTurnIndicator.textContent = '⚡ DU BIST AM ZUG!';
-      activeTurnIndicator.style.color = '#32ff7e';
+      activeTurnIndicator.removeAttribute('style');
+      activeTurnIndicator.classList.add('my-turn');
+      if (gameScreenEl) gameScreenEl.classList.add('my-turn-bg');
+      if (canvasWrapperEl) canvasWrapperEl.classList.add('my-turn-bg');
     } else {
       activeTurnIndicator.textContent = activePlayer ? `Warten auf ${activePlayer.name}...` : 'Warten...';
-      activeTurnIndicator.style.color = '#18dcff';
+      activeTurnIndicator.removeAttribute('style');
+      activeTurnIndicator.classList.remove('my-turn');
+      if (gameScreenEl) gameScreenEl.classList.remove('my-turn-bg');
+      if (canvasWrapperEl) canvasWrapperEl.classList.remove('my-turn-bg');
     }
 
     // Pass turn button visibility
@@ -565,13 +579,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const winPoints = document.getElementById('win-points');
 
     if (winner) {
-      winTitle.textContent = `🏆 ${winner.name} hat gewonnen!`;
+      let points = state.lastRoundPoints;
+      if (points === undefined && state.lastAction) {
+        const match = state.lastAction.match(/\(\+(\d+)\s*Punkte\)/);
+        if (match) points = parseInt(match[1], 10);
+      }
+      if (points === undefined) points = 0;
+
+      winTitle.textContent = '🏆 Spiel beendet';
       winSubtitle.textContent = `${winner.name} hat gewonnen! 🎉`;
-      winPoints.textContent = state.lastAction;
+      winPoints.textContent = `+${points} Punkte`;
       window.soundManager.winSound();
     } else {
-      winTitle.textContent = 'Spiel beendet';
-      winSubtitle.textContent = state.lastAction;
+      winTitle.textContent = '🏆 Spiel beendet';
+      winSubtitle.textContent = state.lastAction || 'Kein Gewinner';
+      winPoints.textContent = '0 Punkte';
     }
 
     // Only host sees "Next Round" button
@@ -580,6 +602,9 @@ document.addEventListener('DOMContentLoaded', () => {
     btnNextRound.style.display = isHost ? 'inline-flex' : 'none';
 
     roundWinModal.classList.add('active');
+    if (window.fireworksManager) {
+      window.fireworksManager.start();
+    }
   }
 
   // Screen Orientation Lock Helper

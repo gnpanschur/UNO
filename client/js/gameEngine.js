@@ -97,13 +97,18 @@ class GameEngine {
     this.ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
     this.ctx.fill();
 
+    // Check if it is the local player's turn
+    const isMyTurn = this.gameState && this.gameState.activePlayerId === this.localPlayerId;
+    const tableFeltColor = isMyTurn ? '#0b3c20' : '#102a43'; // Casino Dark Green when active turn
+    const tableBorderColor = isMyTurn ? '#166534' : '#243b53';
+
     // Outer Felt Table Border (Circular)
     this.ctx.beginPath();
     this.ctx.arc(centerX, centerY, tableRadius, 0, Math.PI * 2);
-    this.ctx.fillStyle = '#102a43';
+    this.ctx.fillStyle = tableFeltColor;
     this.ctx.fill();
     this.ctx.lineWidth = 12;
-    this.ctx.strokeStyle = '#243b53';
+    this.ctx.strokeStyle = tableBorderColor;
     this.ctx.stroke();
 
     // Inner Active Color Glow Ring
