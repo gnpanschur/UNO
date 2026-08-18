@@ -86,10 +86,16 @@ input[type="text"] {
   display: flex;
 }
 
-#login-screen,
-#lobby-screen {
+#login-screen {
   justify-content: flex-start;
   padding-top: 1rem;
+  overflow-y: auto;
+}
+
+#lobby-screen {
+  justify-content: flex-start;
+  padding-top: 0.5rem;
+  padding-bottom: 5rem;
   overflow-y: auto;
 }
 
@@ -323,12 +329,15 @@ input[type="text"]:focus {
 }
 
 /* ================= LOBBY SCREEN ================= */
+.card-glass.lobby-box,
 .lobby-box {
   width: 92%;
-  max-width: 600px;
+  max-width: 540px;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem !important;
+  margin-bottom: 4.5rem !important;
 }
 
 .lobby-header {
@@ -336,42 +345,48 @@ input[type="text"]:focus {
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 1rem;
+  padding-bottom: 0.35rem;
+  margin-bottom: 0;
 }
 
 .room-code-badge {
   background: rgba(24, 220, 255, 0.15);
   border: 1px solid rgba(24, 220, 255, 0.4);
-  padding: 0.4rem 0.8rem;
-  border-radius: 12px;
+  padding: 0.2rem 0.55rem;
+  border-radius: 10px;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
+  gap: 0.3rem;
+  font-size: 0.82rem;
   cursor: pointer;
 }
 
 .room-code-badge strong {
-  font-size: 1.2rem;
+  font-size: 1.05rem;
   color: var(--uno-blue);
   letter-spacing: 2px;
+}
+
+.players-section h3 {
+  font-size: 0.9rem;
+  margin-bottom: 0.2rem;
 }
 
 .players-grid {
   list-style: none;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 0.8rem;
-  margin-top: 0.8rem;
-  max-height: 260px;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 0.3rem;
+  margin-top: 0.2rem;
+  max-height: 200px;
   overflow-y: auto;
 }
 
 .player-card {
   background: rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.8rem 1rem;
-  border-radius: 14px;
+  padding: 0.35rem 0.65rem;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -380,25 +395,25 @@ input[type="text"]:focus {
 .player-info {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.45rem;
 }
 
 .avatar-circle {
-  width: 36px;
-  height: 36px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--uno-blue), #0097e6);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 800;
-  font-size: 1.1rem;
+  font-size: 0.85rem;
 }
 
 .badge {
-  font-size: 0.75rem;
-  padding: 0.25rem 0.6rem;
-  border-radius: 8px;
+  font-size: 0.68rem;
+  padding: 0.18rem 0.45rem;
+  border-radius: 5px;
   font-weight: 700;
 }
 .badge-ready { background: rgba(50, 255, 126, 0.2); color: var(--uno-green); border: 1px solid var(--uno-green); }
@@ -407,10 +422,11 @@ input[type="text"]:focus {
 
 .lobby-footer {
   display: flex;
-  gap: 0.8rem;
+  gap: 0.5rem;
   justify-content: flex-end;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: 1rem;
+  padding-top: 0.5rem;
+  margin-top: 0.2rem;
 }
 
 /* ================= GAME SCREEN ================= */
@@ -856,11 +872,19 @@ input[type="text"]:focus {
 
 /* Responsive Mobile Layout (Strict Portrait Mode) */
 @media (max-width: 768px) {
-  #login-screen,
-  #lobby-screen {
+  #login-screen {
     padding-top: 0.3rem;
   }
-  .card-glass { padding: 1.2rem; }
+  #lobby-screen {
+    padding-top: 0.2rem;
+    padding-bottom: 6rem !important;
+  }
+  .card-glass { padding: 1rem; }
+  .card-glass.lobby-box, .lobby-box {
+    padding: 0.5rem 0.75rem !important;
+    margin-bottom: 5rem !important;
+    max-width: 96% !important;
+  }
   .game-controls { right: 0.8rem; bottom: 105px; }
   .action-log-toast { 
     top: 66px;
