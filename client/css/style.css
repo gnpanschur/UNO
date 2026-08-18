@@ -511,7 +511,7 @@ input[type="text"]:focus {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.15);
-  padding: 0.4rem 0.85rem;
+  padding: 0.45rem 0.9rem;
   border-radius: 12px;
   font-size: 0.85rem;
   font-weight: 700;
@@ -519,6 +519,8 @@ input[type="text"]:focus {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
   pointer-events: none;
   transition: all 0.3s ease;
+  line-height: 1.35;
+  text-align: left;
 }
 
 /* Dunkelgrüner Casino-Style wenn der Spieler am Zug ist */

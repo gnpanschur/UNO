@@ -397,6 +397,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ================= UI RENDER HELPERS =================
 
+  function escapeHTML(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
   function updateLobbyUI(state) {
     displayRoomCode.textContent = state.code;
     playerCountDisplay.textContent = state.players.length;
@@ -466,13 +475,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvasWrapperEl = document.querySelector('.canvas-wrapper');
 
     if (state.activePlayerId === myId) {
-      activeTurnIndicator.textContent = '⚡ DU BIST AM ZUG!';
+      activeTurnIndicator.innerHTML = '⚡ DU BIST AM ZUG!';
       activeTurnIndicator.removeAttribute('style');
       activeTurnIndicator.classList.add('my-turn');
       if (gameScreenEl) gameScreenEl.classList.add('my-turn-bg');
       if (canvasWrapperEl) canvasWrapperEl.classList.add('my-turn-bg');
     } else {
-      activeTurnIndicator.textContent = activePlayer ? `Warten auf ${activePlayer.name}...` : 'Warten...';
+      const pName = activePlayer ? escapeHTML(activePlayer.name) : '';
+      activeTurnIndicator.innerHTML = activePlayer ? `Warten auf<br><strong>${pName}</strong>` : 'Warten...';
       activeTurnIndicator.removeAttribute('style');
       activeTurnIndicator.classList.remove('my-turn');
       if (gameScreenEl) gameScreenEl.classList.remove('my-turn-bg');
