@@ -88,14 +88,15 @@ input[type="text"] {
 
 #login-screen {
   justify-content: flex-start;
-  padding-top: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 6rem !important;
   overflow-y: auto;
 }
 
 #lobby-screen {
   justify-content: flex-start;
   padding-top: 0.5rem;
-  padding-bottom: 5rem;
+  padding-bottom: 6rem !important;
   overflow-y: auto;
 }
 
@@ -111,10 +112,12 @@ input[type="text"] {
 }
 
 /* ================= AUTH / LOGIN SCREEN ================= */
+.card-glass.login-box,
 .login-box {
   width: 90%;
   max-width: 440px;
   text-align: center;
+  margin-bottom: 5rem !important;
 }
 
 .logo-title {
@@ -873,13 +876,19 @@ input[type="text"]:focus {
 /* Responsive Mobile Layout (Strict Portrait Mode) */
 @media (max-width: 768px) {
   #login-screen {
-    padding-top: 0.3rem;
+    padding-top: 0.2rem;
+    padding-bottom: 6rem !important;
   }
   #lobby-screen {
     padding-top: 0.2rem;
     padding-bottom: 6rem !important;
   }
   .card-glass { padding: 1rem; }
+  .card-glass.login-box, .login-box {
+    padding: 1rem 1.2rem !important;
+    margin-bottom: 5rem !important;
+    max-width: 96% !important;
+  }
   .card-glass.lobby-box, .lobby-box {
     padding: 0.5rem 0.75rem !important;
     margin-bottom: 5rem !important;
