@@ -67,6 +67,16 @@ document.addEventListener('DOMContentLoaded', () => {
     playerNameInput.value = savedName;
   }
 
+  // Check URL parameters for room code (e.g., ?room=K9X2) and auto-fill input
+  const urlParams = new URLSearchParams(window.location.search);
+  const roomParam = urlParams.get('room') || urlParams.get('code');
+  if (roomParam) {
+    roomCodeInput.value = roomParam.trim().toUpperCase();
+    if (!savedName && playerNameInput) {
+      setTimeout(() => playerNameInput.focus(), 300);
+    }
+  }
+
   // Restrict room code input to letters only (no numbers)
   roomCodeInput.addEventListener('input', (e) => {
     e.target.value = e.target.value.replace(/[^A-Za-z]/g, '').toUpperCase();
@@ -170,7 +180,8 @@ document.addEventListener('DOMContentLoaded', () => {
     btnShareWhatsapp.addEventListener('click', () => {
       const code = displayRoomCode ? displayRoomCode.textContent : '';
       if (!code || code === '----') return;
-      const shareText = `Spiele mit mir UNO! 🎴\nRaumcode: ${code}\nLink: ${window.location.origin}`;
+      const joinUrl = `${window.location.origin}${window.location.pathname}?room=${code}`;
+      const shareText = `Spiele mit mir UNO! 🎴\nKlicke auf den Link zum Beitreten:\n${joinUrl}`;
       const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
       window.open(whatsappUrl, '_blank');
     });
