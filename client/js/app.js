@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const code = displayRoomCode ? displayRoomCode.textContent : '';
       if (!code || code === '----') return;
       const joinUrl = `${window.location.origin}${window.location.pathname}?room=${code}`;
-      const shareText = `Spiele mit mir UNO! 🎴\nKlicke auf den Link zum Beitreten:\n${joinUrl}`;
+      const shareText = `Klicke auf den Link und Beitreten:\n${joinUrl}`;
       const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
       window.open(whatsappUrl, '_blank');
     });
