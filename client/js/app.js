@@ -164,6 +164,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Share Room Code via WhatsApp
+  const btnShareWhatsapp = document.getElementById('btn-share-whatsapp');
+  if (btnShareWhatsapp) {
+    btnShareWhatsapp.addEventListener('click', () => {
+      const code = displayRoomCode ? displayRoomCode.textContent : '';
+      if (!code || code === '----') return;
+      const shareText = `Spiele mit mir UNO! 🎴\nRaumcode: ${code}\nLink: ${window.location.origin}`;
+      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+      window.open(whatsappUrl, '_blank');
+    });
+  }
+
   // Toggle Sound Mute
   btnToggleSound.addEventListener('click', () => {
     const enabled = window.soundManager.toggleSound();
