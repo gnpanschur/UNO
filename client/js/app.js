@@ -85,9 +85,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnJoinRoom) {
       btnJoinRoom.textContent = `Raum ${code} Beitreten 🚀`;
+      btnJoinRoom.classList.add('btn-glow');
     }
 
-    if (!savedName && playerNameInput) {
+    if (savedName) {
+      // Auto-join room if player name is already saved from previous session
+      setTimeout(() => {
+        if (roomCodeInput.value.trim().length === 4 && playerNameInput.value.trim()) {
+          btnJoinRoom.click();
+        }
+      }, 300);
+    } else if (playerNameInput) {
       setTimeout(() => playerNameInput.focus(), 300);
     }
   }
