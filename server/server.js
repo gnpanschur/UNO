@@ -100,6 +100,11 @@ io.on('connection', (socket) => {
         return;
       }
 
+      if (game.deletionTimeout) {
+        clearTimeout(game.deletionTimeout);
+        game.deletionTimeout = null;
+      }
+
       const result = game.addPlayer(socket.id, playerName);
       if (result.success) {
         socket.join(code);
@@ -212,8 +217,14 @@ io.on('connection', (socket) => {
       if (game) {
         game.removePlayer(socket.id);
         if (game.players.length === 0) {
-          console.log(`[Room ${currentRoomCode}] Empty room deleted`);
-          rooms.delete(currentRoomCode);
+          console.log(`[Room ${currentRoomCode}] Empty room - scheduling deletion in 60s`);
+          if (game.deletionTimeout) clearTimeout(game.deletionTimeout);
+          game.deletionTimeout = setTimeout(() => {
+            if (game.players.length === 0) {
+              console.log(`[Room ${currentRoomCode}] Empty room deleted after timeout`);
+              rooms.delete(currentRoomCode);
+            }
+          }, 60000);
         }
       }
     }
