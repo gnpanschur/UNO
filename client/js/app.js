@@ -83,10 +83,31 @@ document.addEventListener('DOMContentLoaded', () => {
     roomCodeInput.style.backgroundColor = 'rgba(255, 255, 255, 0.08)';
     roomCodeInput.style.cursor = 'not-allowed';
 
+    if (btnJoinRoom) {
+      btnJoinRoom.textContent = `Raum ${code} Beitreten 🚀`;
+    }
+
     if (!savedName && playerNameInput) {
       setTimeout(() => playerNameInput.focus(), 300);
     }
   }
+
+  // Allow submitting with Enter key
+  playerNameInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      if (roomParam || roomCodeInput.value.trim()) {
+        btnJoinRoom.click();
+      } else {
+        btnCreateRoom.click();
+      }
+    }
+  });
+
+  roomCodeInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      btnJoinRoom.click();
+    }
+  });
 
   // Restrict room code input to letters only (no numbers)
   roomCodeInput.addEventListener('input', (e) => {
