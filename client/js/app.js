@@ -71,7 +71,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const urlParams = new URLSearchParams(window.location.search);
   const roomParam = urlParams.get('room') || urlParams.get('code');
   if (roomParam) {
-    roomCodeInput.value = roomParam.trim().toUpperCase();
+    const code = roomParam.trim().toUpperCase();
+    roomCodeInput.value = code;
+    
+    // Hide "Raum Erstellen" & divider, and lock room code input for direct room join
+    if (btnCreateRoom) btnCreateRoom.style.display = 'none';
+    const divider = document.querySelector('.divider');
+    if (divider) divider.style.display = 'none';
+
+    roomCodeInput.readOnly = true;
+    roomCodeInput.style.backgroundColor = 'rgba(255, 255, 255, 0.08)';
+    roomCodeInput.style.cursor = 'not-allowed';
+
     if (!savedName && playerNameInput) {
       setTimeout(() => playerNameInput.focus(), 300);
     }
