@@ -531,10 +531,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  let catchTimer = null;
+
   function updateCatchUnoBanner(state) {
+    if (catchTimer) clearTimeout(catchTimer);
     const myId = window.socketClient.socketId;
-    // Check if any opponent has 1 card and forgot to call UNO
-    const missedUnoPlayer = state.players.find(p => p.id !== myId && p.handCount === 1 && !p.hasCalledUno);
+
+    // Check if any opponent has 1 card, forgot to call UNO, and 500ms grace period has passed
+    const missedUnoPlayer = state.players.find(p => {
+      if (p.id === myId || p.handCount !== 1 || p.hasCalledUno) return false;
+      const elapsed = Date.now() - (p.oneCardTimestamp || 0);
+      return elapsed >= 500;
+    });
 
     if (missedUnoPlayer) {
       unhandledTargetPlayerId = missedUnoPlayer.id;
@@ -543,6 +551,20 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       unhandledTargetPlayerId = null;
       catchUnoBanner.classList.add('hidden');
+
+      // Schedule banner check for opponents within 500ms grace period
+      const pendingPlayer = state.players.find(p => {
+        if (p.id === myId || p.handCount !== 1 || p.hasCalledUno) return false;
+        const elapsed = Date.now() - (p.oneCardTimestamp || 0);
+        return elapsed < 500;
+      });
+
+      if (pendingPlayer) {
+        const remainingTime = Math.max(10, 500 - (Date.now() - (pendingPlayer.oneCardTimestamp || 0)));
+        catchTimer = setTimeout(() => {
+          updateCatchUnoBanner(state);
+        }, remainingTime);
+      }
     }
   }
 

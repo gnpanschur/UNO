@@ -264,9 +264,14 @@ class UnoGame {
 
     this.lastAction = `${player.name} hat ${this.getCardName(card)} gespielt.`;
 
-    // Reset UNO call status if player hand size grows above 1
-    if (player.hand.length !== 1) {
+    // Set timestamp if hand size is now 1, or reset UNO call status if hand size is not 1
+    if (player.hand.length === 1) {
+      if (!player.oneCardTimestamp) {
+        player.oneCardTimestamp = Date.now();
+      }
+    } else {
       player.hasCalledUno = false;
+      player.oneCardTimestamp = 0;
     }
 
     // Check Win Condition
@@ -335,6 +340,7 @@ class UnoGame {
     const player = this.players[playerIndex];
     player.hand.push(card);
     player.hasCalledUno = false;
+    player.oneCardTimestamp = 0;
     this.drawnThisTurn = true;
     this.drawnCardId = card.id;
 
@@ -381,9 +387,16 @@ class UnoGame {
     if (!target || !catcher) return { success: false, message: 'Spieler nicht gefunden' };
 
     if (target.hand.length === 1 && !target.hasCalledUno) {
+      const elapsed = Date.now() - (target.oneCardTimestamp || 0);
+      if (elapsed < 500) {
+        return { success: false, message: 'Schonfrist: Der Spieler hat noch Zeit (0,5s), um UNO zu rufen!' };
+      }
+
       this.ensureDeckHasCards(2);
       const penaltyCards = this.deck.draw(2);
       target.hand.push(...penaltyCards);
+      target.hasCalledUno = false;
+      target.oneCardTimestamp = 0;
       this.lastAction = `🚨 ${catcher.name} hat erwischt, dass ${target.name} vergaß UNO zu rufen! ${target.name} zieht 2 Strafkarten.`;
       this.notifyStateChange();
       return { success: true, caught: true };
@@ -460,7 +473,8 @@ class UnoGame {
         handCount: p.hand.length,
         isHost: p.isHost,
         isReady: p.isReady,
-        hasCalledUno: p.hasCalledUno
+        hasCalledUno: p.hasCalledUno,
+        oneCardTimestamp: p.oneCardTimestamp || 0
       }))
     };
   }
