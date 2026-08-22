@@ -37,13 +37,44 @@ class UnoGame {
   }
 
   addPlayer(socketId, name, isHost = false) {
-    if (this.status !== 'lobby') return { success: false, message: 'Spiel läuft bereits' };
-    if (this.players.length >= 8) return { success: false, message: 'Raum ist voll (max. 8 Spieler)' };
+    const trimmedName = (name || '').trim() || 'Spieler';
+
+    // If game round has ended, reset status back to lobby for next round
+    if (this.status === 'ended') {
+      this.status = 'lobby';
+    }
+
+    // Check if player with same name already exists in room (e.g., reconnection)
+    const existingPlayer = this.players.find(p => p.name.toLowerCase() === trimmedName.toLowerCase());
+
+    if (this.status === 'playing') {
+      if (existingPlayer) {
+        console.log(`[UnoGame ${this.code}] Reconnecting player ${trimmedName} (${existingPlayer.socketId} -> ${socketId})`);
+        existingPlayer.socketId = socketId;
+        existingPlayer.id = socketId;
+        this.lastAction = `${existingPlayer.name} ist wieder verbunden!`;
+        this.notifyStateChange();
+        return { success: true, player: existingPlayer, reconnected: true };
+      }
+      return { success: false, message: 'Das Spiel in diesem Raum läuft bereits' };
+    }
+
+    if (this.players.length >= 8 && !existingPlayer) {
+      return { success: false, message: 'Raum ist voll (max. 8 Spieler)' };
+    }
+
+    if (existingPlayer) {
+      existingPlayer.socketId = socketId;
+      existingPlayer.id = socketId;
+      existingPlayer.name = trimmedName;
+      this.notifyStateChange();
+      return { success: true, player: existingPlayer };
+    }
 
     const player = {
       socketId: socketId,
       id: socketId,
-      name: name.trim() || 'Spieler',
+      name: trimmedName,
       hand: [],
       isReady: true,
       isHost: isHost,
